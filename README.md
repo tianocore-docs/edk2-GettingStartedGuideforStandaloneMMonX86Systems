@@ -1,7 +1,7 @@
 <!--- @file
-  README.md for EDK II Template Specification
+  README.md for Standalone MM Getting Started Guide
 
-  Copyright (c) 2017, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2025, Intel Corporation. All rights reserved.<BR>
 
   Redistribution and use in source (original document form) and 'compiled'
   forms (converted to PDF, epub, HTML and other formats) with or without
@@ -72,11 +72,10 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-Copyright (c) 2017, Intel Corporation. All rights reserved.
+Copyright (c) 2025, Intel Corporation. All rights reserved.
 
 ### Revision History
 
 | Revision   | Revision History   | Date        |
 | ---------- | ------------------ | ----------- |
-| 0.10       | Initial release.   | March 2017  |
-| 0.20       | Second release.    | March 2017  |
+| 1.00       | Initial release.   | April 2025  |

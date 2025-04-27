@@ -1,8 +1,8 @@
 {
   "variables" : {
     "draft"   : "yes",
-    "title"   : "EDK II Template Specification",
-    "version" : "Revision 0.20"
+    "title"   : "Standalone MM Getting Started Guide",
+    "version" : "Revision 1.00"
   },
   "plugins": ["puml-aleung"],
   "pluginsConfig": {}
