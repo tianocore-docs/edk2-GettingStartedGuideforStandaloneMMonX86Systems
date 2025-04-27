@@ -33,21 +33,21 @@
 
 * [Standalone MM Getting Started Guide](README.md)
 
-* [MM Introduction](1_mm_introduction.md#mm-introduction)
-  * [SMM and MM Overview](1_mm_introduction.md#smm-and-mm-overview)
-  * [MM Driver Dispatch](1_mm_introduction.md#mm-driver-dispatch)
-  * [MM Communication Buffer](1_mm_introduction.md#mm-communication-buffer)
-  * [Non-MMRAM Access](1_mm_introduction.md#non-mmram-access)
-  * [MM HOBs](1_mm_introduction.md#mm-hobs)
-    * [MM Foundation HOBs](1_mm_introduction.md#mm-foundation-hobs)
-    * [MM Platform HOBs](1_mm_introduction.md#mm-platform-hobs)
-  * [Communication between SMM/Non-SMM](1_mm_introduction.md#communication-between-smmnon-smm)
-  * [Memory Protection](1_mm_introduction.md#memory-protection)
+* [1 MM Introduction](1_mm_introduction.md#1-mm-introduction)
+  * [1.1 SMM and MM Overview](1_mm_introduction.md#11-smm-and-mm-overview)
+  * [1.2 MM Driver Dispatch](1_mm_introduction.md#12-mm-driver-dispatch)
+  * [1.3 MM Communication Buffer](1_mm_introduction.md#13-mm-communication-buffer)
+  * [1.4 Non-MMRAM Access](1_mm_introduction.md#14-non-mmram-access)
+  * [1.5 MM HOBs](1_mm_introduction.md#15-mm-hobs)
+    * [1.51 MM Foundation HOBs](1_mm_introduction.md#151-mm-foundation-hobs)
+    * [1.52 MM Platform HOBs](1_mm_introduction.md#152-mm-platform-hobs)
+  * [1.6 Communication between SMM/Non-SMM](1_mm_introduction.md#16-communication-between-smmnon-smm)
+  * [1.7 Memory Protection](1_mm_introduction.md#17-memory-protection)
 
-* [SMM to MM Porting Guide](2_smm_to_mm_porting_guide.md#smm-to-mm-porting-guide)
-  * [Porting Design Overview](2_smm_to_mm_porting_guide.md#porting-design-overview)
-  * [Checkpoints in Converted MM Driver](2_smm_to_mm_porting_guide.md#checkpoints-in-converted-mm-driver)
-  * [Sample: SMM to MM Conversion](2_smm_to_mm_porting_guide.md#sample-smm-to-mm-conversion)
+* [2 SMM to MM Porting Guide](2_smm_to_mm_porting_guide.md#2-smm-to-mm-porting-guide)
+  * [2.1 Porting Design Overview](2_smm_to_mm_porting_guide.md#21-porting-design-overview)
+  * [2.2 Checkpoints in Converted MM Driver](2_smm_to_mm_porting_guide.md#22-checkpoints-in-converted-mm-driver)
+  * [2.3 Sample: SMM to MM Conversion](2_smm_to_mm_porting_guide.md#23-sample-smm-to-mm-conversion)
 
 ---
 

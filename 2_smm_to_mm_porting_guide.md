@@ -29,9 +29,9 @@
 
 -->
 
-# SMM to MM Porting Guide
+# 2 SMM to MM Porting Guide
 
-## Porting Design Overview
+## 2.1 Porting Design Overview
 
 This section provides instructions on how to convert traditional SMM drivers to MM drivers. A traditional SMM driver may need to be split into one or more drivers when transitioning to a Standalone MM driver:
 
@@ -46,7 +46,7 @@ The figure below illustrates how to convert a traditional SMM driver to an MM dr
 ![SMM to MM Conversion](./media/image2.jpg)
 ###### Figure 2: SMM to MM Conversion
 
-## Checkpoints in Converted MM Driver
+## 2.2 Checkpoints in Converted MM Driver
 
 To ensure the converted Standalone MM driver is functional, the following checkpoints should be verified:
 
@@ -58,14 +58,14 @@ To ensure the converted Standalone MM driver is functional, the following checkp
 
 2. **Checkpoint 2: Confirm Necessary HOBs Have Been Migrated to MM HOB Database**
 
-   Refer to section **MM HOBs** for details.
+   Refer to section **1.5 MM HOBs** for details.
    **Note**: HOB creation cannot depend on the end of the PEI notify event if the HOB needs to be accessed in MM. This is because the `StandaloneMmIpl` PEIM is dispatched before the end of PEI, leaving no opportunity for the IPL to migrate newly created HOBs to the MM HOB database.
 
 3. **Checkpoint 3: Check Dependencies on `gBS`, `gDS`, `gRT`, or ACPI-Related Services**
 
    If the original SMM driver depends on DXE protocols (e.g., `gBS` or `gDS`), it can only be used during the DXE phase. And ACPI tables must be installed during the DXE phase.
 
-1. **Checkpoint 4: Check Access to Non-MMRAM**
+4. **Checkpoint 4: Check Access to Non-MMRAM**
 
    Non-MMRAM access typically falls into the following cases:
    - **Case 1**: Accessing a HOB that contains a pointer or address pointing to non-MMRAM.
@@ -75,13 +75,13 @@ To ensure the converted Standalone MM driver is functional, the following checkp
    - **Case 3**: The registered SMI handler uses `gMmst->MmiHandlerRegister(SmiHandler, NULL, ...)` or MM Child Dispatch protocols (e.g., `SwDispatch->Register`).
      If it accesses any non-MMRAM buffer, use `MmUnblockMemoryRequest()` in the PEI phase before the `StandaloneMmIpl` entry point.
 
-2. **Checkpoint 5: Validate Primary & Non-Primary Buffers**
+5. **Checkpoint 5: Validate Primary & Non-Primary Buffers**
 
-   Refer to section **Non-MMRAM Access** for definitions of Primary and Non-Primary Buffers. Both types of buffers used by MM drivers should be validated for accessibility before use:
+   Refer to section **1.3 MM Communication Buffer** for definitions of Primary and Non-Primary Buffers. Both types of buffers used by MM drivers should be validated for accessibility before use:
    - Use `XXXIsPrimaryBufferValid()` to validate the `CommBuffer`.
    - Use `XXXIsNonPrimaryBufferValid()` to validate non-MMRAM memory pointed from the `CommBuffer` or MM HOB.
 
-## Sample: SMM to MM Conversion
+## 2.3 Sample: SMM to MM Conversion
 
 The Tcg2 SMM and MM modules will be used as a sample to highlight the key points to consider when converting a traditional SMM module to an MM module:
 
@@ -127,7 +127,7 @@ The Tcg2 SMM and MM modules will be used as a sample to highlight the key points
 
    The `mTcgNvs` global variable in the Tcg2 SMM module plays a crucial role in TPM operations, especially when updating the ACPI table and handling SMI callback functions.
    `mTcgNvs` is the operation region in the TCG ACPI table and must be a non-MMRAM memory buffer pointed from the `CommBuffer`.
-   According to Section **Non-MMRAM Access**, it must be unblocked using `MmUnblockMemoryRequest()`.
+   According to Section **1.4 Non-MMRAM Access**, it must be unblocked using `MmUnblockMemoryRequest()`.
    The related operation can be found in the `BuildTcg2AcpiCommunicateBufferHob()` function in `Edk2\SecurityPkg\Tcg\Tcg2Config\Tcg2ConfigPei.inf`.
 
 7. **Check Primary & Non-Primary Buffer Validity**
