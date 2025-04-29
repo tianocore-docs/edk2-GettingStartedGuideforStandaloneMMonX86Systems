@@ -92,7 +92,7 @@
                 <a href="./">
             
                     
-                    Standalone MM Getting Started Guide
+                    Getting Started Guide for Standalone MM on X86 Systems
             
                 </a>
             
@@ -482,8 +482,8 @@
      -->
     
       <h2>
-        <div style="position:absolute;text-align:left">Standalone MM Getting Started Guide</div>
-        <div style="position:absolute;width:100%;text-align:center">DRAFT [04/27/2025 07:38:26]</div>
+        <div style="position:absolute;text-align:left">Getting Started Guide for Standalone MM on X86 Systems</div>
+        <div style="position:absolute;width:100%;text-align:center">DRAFT [04/29/2025 09:25:29]</div>
         <div style="text-align:right">Revision 1.00</div>
       </h2>  
     
@@ -499,7 +499,7 @@
                                 <section class="normal markdown-section">
                                 
                                 <!--- @file
-  First Chapter of Standalone MM Getting Started Guide
+  First Chapter of Getting Started Guide for Standalone MM on X86 Systems
 
   Copyright (c) 2025, Intel Corporation. All rights reserved.<BR>
 
@@ -530,7 +530,7 @@
 -->
 <h1 id="1-mm-introduction">1 MM Introduction</h1>
 <h2 id="11-smm-and-mm-overview">1.1 SMM and MM Overview</h2>
-<p>This section describes the main differences between Traditional SMM and Standalone MM. A detailed comparison of the Traditional MM and Standalone MM load process is described in the PI Specification sections &quot;Initializing Management Mode in MM Traditional Mode&quot; and &quot;Initializing Management Mode in Standalone Mode&quot; respectively.</p>
+<p>This section describes the main differences between Traditional SMM and Standalone MM on X86 systems. A detailed comparison of the Traditional MM and Standalone MM load process is described in the PI Specification sections &quot;Initializing Management Mode in MM Traditional Mode&quot; and &quot;Initializing Management Mode in Standalone Mode&quot; respectively.</p>
 <p>In the following comparison, we will use &quot;SMM&quot; to represent &quot;Traditional SMM&quot; and &quot;MM&quot; to represent &quot;Standalone MM&quot;.</p>
 <p>SMM Driver:</p>
 <ul>
@@ -553,7 +553,7 @@
 <li>Early memory protection in PEI: <code>StandaloneMmCore</code> installs the <code>EDKII_PI_SMM_MEMORY_ATTRIBUTES_TABLE</code> once the second round of dispatch finishes. Refer to section <strong>1.7 Memory Protection</strong> for details.</li>
 </ul>
 <h2 id="12-mm-driver-dispatch">1.2 MM Driver Dispatch</h2>
-<p>For traditional SMM drivers, they are dispatched within multiple rounds: The dispatch is hooked on the <code>gEfiEventDxeDispatchGuid</code> event, which is signaled by DXE Core when DXE Core finishes one round of dispatch.</p>
+<p>For traditional SMM drivers dispatch on X86 systems, they are dispatched within multiple rounds: The dispatch is hooked on the <code>gEfiEventDxeDispatchGuid</code> event, which is signaled by DXE Core when DXE Core finishes one round of dispatch.</p>
 <p><code>StandaloneMmIpl</code> is a PEIM responsible for locating and loading <code>StandaloneMmCore</code>. All the MM drivers are dispatched by <code>StandaloneMmCore</code> in the 2-round dispatches in X86:</p>
 <ul>
 <li><strong>1st round</strong>: <code>StandaloneMmCore</code> dispatches MM drivers in its IPL entry point running in non-SMM mode. It exits to <code>StandaloneMmIpl</code> after <code>PiSmmCpuStandaloneMm</code> installs the SMI handler in its entry point.</li>
@@ -636,7 +636,7 @@
 </ol>
 <h2 id="17-memory-protection">1.7 Memory Protection</h2>
 <p>The <code>PiSmmCpuStandaloneMm</code> driver creates a page table used in MM mode according to the <code>EFI_HOB_RESOURCE_DESCRIPTOR</code> in the MM HOB list. The newly created page table controls memory accessibility in MM.</p>
-<p>The following table outlines the differences in memory protection policies between the traditional SMM and the Standalone MM. This comparison is particularly relevant for x86 systems and highlights the security enhancements provided by Standalone MM.</p>
+<p>The following table outlines the differences in memory protection policies between the traditional SMM and the Standalone MM. Note: this comparison is particularly relevant for x86 systems and highlights the security enhancements provided by Standalone MM.</p>
 <table>
 <thead>
 <tr>
@@ -699,8 +699,8 @@
     <hr>
     
       <h2>
-        <div style="position:absolute;text-align:left">Standalone MM Getting Started Guide</div>
-        <div style="position:absolute;width:100%;text-align:center">DRAFT [04/27/2025 07:38:26]</div>
+        <div style="position:absolute;text-align:left">Getting Started Guide for Standalone MM on X86 Systems</div>
+        <div style="position:absolute;width:100%;text-align:center">DRAFT [04/29/2025 09:25:29]</div>
         <div style="text-align:right">Revision 1.00</div>
       </h2>  
     
@@ -713,7 +713,7 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Standalone MM Getting Started Guide">
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Getting Started Guide for Standalone MM on X86 Systems">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -729,7 +729,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"1 MM Introduction","level":"1.2","depth":1,"next":{"title":"1.1 SMM and MM Overview","level":"1.2.1","depth":2,"anchor":"#11-smm-and-mm-overview","path":"1_mm_introduction.md","ref":"1_mm_introduction.md#11-smm-and-mm-overview","articles":[]},"previous":{"title":"Standalone MM Getting Started Guide","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{"draft":"yes","title":"Standalone MM Getting Started Guide","version":"Revision 1.00"},"plugins":["puml-aleung"],"pluginsConfig":{"puml-aleung":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"1_mm_introduction.md","mtime":"2025-04-27T07:37:59.280Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2025-04-27T07:38:26.202Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"1 MM Introduction","level":"1.2","depth":1,"next":{"title":"1.1 SMM and MM Overview","level":"1.2.1","depth":2,"anchor":"#11-smm-and-mm-overview","path":"1_mm_introduction.md","ref":"1_mm_introduction.md#11-smm-and-mm-overview","articles":[]},"previous":{"title":"Getting Started Guide for Standalone MM on X86 Systems","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{"draft":"yes","title":"Getting Started Guide for Standalone MM on X86 Systems","version":"Revision 1.00"},"plugins":["puml-aleung"],"pluginsConfig":{"puml-aleung":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"1_mm_introduction.md","mtime":"2025-04-29T09:25:01.589Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2025-04-29T09:25:29.950Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
