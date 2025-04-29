@@ -1,5 +1,5 @@
 <!--- @file
-  README.md for Standalone MM Getting Started Guide
+  README.md for Getting Started Guide for Standalone MM on X86 Systems
 
   Copyright (c) 2025, Intel Corporation. All rights reserved.<BR>
 

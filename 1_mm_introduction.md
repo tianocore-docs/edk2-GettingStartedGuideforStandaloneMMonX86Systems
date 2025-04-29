@@ -1,5 +1,5 @@
 <!--- @file
-  First Chapter of Standalone MM Getting Started Guide
+  First Chapter of Getting Started Guide for Standalone MM on X86 Systems
 
   Copyright (c) 2025, Intel Corporation. All rights reserved.<BR>
 
@@ -33,7 +33,7 @@
 
 ## 1.1 SMM and MM Overview
 
-This section describes the main differences between Traditional SMM and Standalone MM. A detailed comparison of the Traditional MM and Standalone MM load process is described in the PI Specification sections "Initializing Management Mode in MM Traditional Mode" and "Initializing Management Mode in Standalone Mode" respectively.
+This section describes the main differences between Traditional SMM and Standalone MM on X86 systems. A detailed comparison of the Traditional MM and Standalone MM load process is described in the PI Specification sections "Initializing Management Mode in MM Traditional Mode" and "Initializing Management Mode in Standalone Mode" respectively.
 
 In the following comparison, we will use "SMM" to represent "Traditional SMM" and "MM" to represent "Standalone MM".
 
@@ -59,7 +59,7 @@ MM Driver:
 
 ## 1.2 MM Driver Dispatch
 
-For traditional SMM drivers, they are dispatched within multiple rounds: The dispatch is hooked on the `gEfiEventDxeDispatchGuid` event, which is signaled by DXE Core when DXE Core finishes one round of dispatch.
+For traditional SMM drivers dispatch on X86 systems, they are dispatched within multiple rounds: The dispatch is hooked on the `gEfiEventDxeDispatchGuid` event, which is signaled by DXE Core when DXE Core finishes one round of dispatch.
 
 `StandaloneMmIpl` is a PEIM responsible for locating and loading `StandaloneMmCore`. All the MM drivers are dispatched by `StandaloneMmCore` in the 2-round dispatches in X86:
 
@@ -153,7 +153,7 @@ But in cases where silicon initialization code does not want to rely on the comm
 
 The `PiSmmCpuStandaloneMm` driver creates a page table used in MM mode according to the `EFI_HOB_RESOURCE_DESCRIPTOR` in the MM HOB list. The newly created page table controls memory accessibility in MM.
 
-The following table outlines the differences in memory protection policies between the traditional SMM and the Standalone MM. This comparison is particularly relevant for x86 systems and highlights the security enhancements provided by Standalone MM.
+The following table outlines the differences in memory protection policies between the traditional SMM and the Standalone MM. Note: this comparison is particularly relevant for x86 systems and highlights the security enhancements provided by Standalone MM.
 
 | Items                        | Policy                                      | SMM                          | MM                           |
 |------------------------------|---------------------------------------------|------------------------------|------------------------------|

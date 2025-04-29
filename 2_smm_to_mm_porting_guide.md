@@ -1,5 +1,5 @@
 <!--- @file
-  First Chapter of Standalone MM Getting Started Guide
+  First Chapter of Getting Started Guide for Standalone MM on X86 Systems
 
   Copyright (c) 2025, Intel Corporation. All rights reserved.<BR>
 
@@ -33,7 +33,7 @@
 
 ## 2.1 Porting Design Overview
 
-This section provides instructions on how to convert traditional SMM drivers to MM drivers. A traditional SMM driver may need to be split into one or more drivers when transitioning to a Standalone MM driver:
+This section provides instructions on how to convert traditional SMM drivers to MM drivers on X86 systems. A traditional SMM driver may need to be split into one or more drivers when transitioning to a Standalone MM driver:
 
 1. **PEI/DXE Driver**: If the traditional SMM driver contains non-MM initialization code:
    - The PEI driver can be used to either unblock memory or prepare required data for runtime code and pass the data via HOB or Comm PPI/Protocol.

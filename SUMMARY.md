@@ -31,7 +31,7 @@
 
 # Summary
 
-* [Standalone MM Getting Started Guide](README.md)
+* [Getting Started Guide for Standalone MM on X86 Systems](README.md)
 
 * [1 MM Introduction](1_mm_introduction.md#1-mm-introduction)
   * [1.1 SMM and MM Overview](1_mm_introduction.md#11-smm-and-mm-overview)
