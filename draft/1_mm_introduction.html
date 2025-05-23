@@ -213,10 +213,10 @@
     
         <li class="chapter " data-level="1.2.6" data-path="1_mm_introduction.html">
             
-                <a href="1_mm_introduction.html#16-communication-between-smmnon-smm">
+                <a href="1_mm_introduction.html#16-data-communication-between-smmnon-smm">
             
                     
-                    1.6 Communication between SMM/Non-SMM
+                    1.6 Data Communication between SMM/Non-SMM
             
                 </a>
             
@@ -483,7 +483,7 @@
     
       <h2>
         <div style="position:absolute;text-align:left">Getting Started Guide for Standalone MM on X86 Systems</div>
-        <div style="position:absolute;width:100%;text-align:center">DRAFT [05/17/2025 05:48:27]</div>
+        <div style="position:absolute;width:100%;text-align:center">DRAFT [05/23/2025 01:02:38]</div>
         <div style="text-align:right">Revision 1.00</div>
       </h2>  
     
@@ -530,6 +530,8 @@
 -->
 <h1 id="1-mm-introduction">1 MM Introduction</h1>
 <h2 id="11-smm-and-mm-overview">1.1 SMM and MM Overview</h2>
+<p><strong>System Management Mode (SMM)</strong> is a specialized operating mode designed for x86 processors to handle system-wide functions such as power management, hardware control, and OEM-designed code.</p>
+<p><strong>Management Mode (MM)</strong> is an isolated execution environment introduced as a modern alternative to SMM. It is designed to provide enhanced security and modularity by running independently of the operating system and other firmware phases.</p>
 <p>This section describes the main differences between Traditional SMM and Standalone MM on X86 systems. A detailed comparison of the Traditional MM and Standalone MM load process is described in the PI Specification sections &quot;Initializing Management Mode in MM Traditional Mode&quot; and &quot;Initializing Management Mode in Standalone Mode&quot; respectively.</p>
 <p>In the following comparison, we will use &quot;SMM&quot; to represent &quot;Traditional SMM&quot; and &quot;MM&quot; to represent &quot;Standalone MM&quot;.</p>
 <p>SMM Driver:</p>
@@ -556,7 +558,7 @@
 <p>For traditional SMM drivers dispatch on X86 systems, they are dispatched within multiple rounds: The dispatch is hooked on the <code>gEfiEventDxeDispatchGuid</code> event, which is signaled by DXE Core when DXE Core finishes one round of dispatch.</p>
 <p><code>StandaloneMmIpl</code> is a PEIM responsible for locating and loading <code>StandaloneMmCore</code>. All the MM drivers are dispatched by <code>StandaloneMmCore</code> in the 2-round dispatches in X86:</p>
 <ul>
-<li><strong>1st round</strong>: <code>StandaloneMmCore</code> dispatches MM drivers in its IPL entry point running in non-SMM mode. It exits to <code>StandaloneMmIpl</code> after <code>PiSmmCpuStandaloneMm</code> installs the SMI handler in its entry point.</li>
+<li><strong>1st round</strong>: <code>StandaloneMmCore</code> dispatches MM drivers in <code>StandaloneMmIpl</code> entry point running in non-SMM mode. It exits to <code>StandaloneMmIpl</code> after <code>PiSmmCpuStandaloneMm</code> installs the SMI handler in its entry point.</li>
 <li><strong>2nd round</strong>: <code>StandaloneMmIpl</code> triggers SMI (<code>gEventMmDispatchGuid</code>) to inform <code>StandaloneMmCore</code> to dispatch the remaining MM drivers in SMM mode in its SMI entry point.</li>
 </ul>
 <p>The following flow chart describes the MM driver dispatch flow:</p>
@@ -604,28 +606,30 @@
 </ul>
 <h3 id="152-mm-platform-hobs">1.5.2 MM Platform HOBs</h3>
 <p>In addition to the MM Foundation HOBs, the <code>StandaloneMmIpl</code> will consume the <code>MmPlatformHobProducerLib/CreateMmPlatformHob()</code> to create platform-specific HOBs that are necessary for the Standalone MM environment. These HOBs provide information and configuration details that are unique to the platform on which the system is running. The creation of these HOBs ensures that the MM environment is properly configured to interact with the platform&apos;s hardware and firmware features.</p>
-<h2 id="16-communication-between-smmnon-smm">1.6 Communication between SMM/Non-SMM</h2>
-<p>The following mechanisms are provided for communication between SMM and Non-SMM:</p>
+<h2 id="16-data-communication-between-smmnon-smm">1.6 Data Communication between SMM/Non-SMM</h2>
+<p>The following mechanisms are provided for data communication between SMM and Non-SMM:</p>
 <ol>
 <li><p>Using <code>CommBuffer</code> with Protocol <code>EFI_MM_COMMUNICATION_PROTOCOL</code> or PPI <code>EFI_PEI_MM_COMMUNICATION_PPI</code>:</p>
 <ul>
 <li>Requires dependency on the <code>EFI_MM_COMMUNICATION_PROTOCOL</code> or <code>EFI_PEI_MM_COMMUNICATION_PPI</code>.</li>
 <li>Triggers an SMI when sharing data between SMM and Non-SMM code.</li>
+<li>It is suitable when the data cannot be finalized before launching MM or when the data flow is bidirectional between SMM and Non-SMM code</li>
 </ul>
 </li>
 <li><p>Using &quot;Unblock Mem&quot;:</p>
 <ul>
 <li>Must meet the usage requirements. Refer to section <strong>1.4 Non-MMRAM Access</strong> for details.</li>
+<li>It is necessary for ASL code to pass data to the SW SMI handler. It is also an alternative solution to avoid triggering an SMI for latency considerations.</li>
 </ul>
 </li>
 <li><p>Using MM Guided HOBs:</p>
 <ul>
 <li>For data sizes &lt; 64KB: Embed the data directly into the HOB.</li>
+<li>It is ideal when the data size is small than 64K and it can be finalized before launching MM and the data flow is unidirectional between SMM and Non-SMM code.</li>
 </ul>
 </li>
 </ol>
-<p>Option #1 is suitable when the data cannot be finalized before launching MM or when the data flow is bidirectional between SMM and Non-SMM code. Option #2 is necessary for ASL code to pass data to the SW SMI handler. It is also an alternative solution to avoid triggering an SMI for latency considerations. Option #3 is ideal when the data size is small than 64K and it can be finalized before launching MM and the data flow is unidirectional between SMM and Non-SMM code.</p>
-<p>But in cases where silicon initialization code does not want to rely on the communication PPI, the data size to be passed to MM exceeds 64KB, and the memory cannot be runtime-accessible due to the requirement for Runtime Non-SMM invisibility, then options #1 and #2 are not applicable. Option #3 requires splitting the data into multiple Guided HOBs, which increases code complexity due to the need to reassemble the data in MM. To simplify this, a fourth method was introduced as below:</p>
+<p>However, in cases where silicon initialization code does not want to rely on the communication PPI, the data size to be passed to MM exceeds 64KB, and the memory cannot be runtime-accessible due to the requirement for Runtime Non-SMM invisibility, then options #1 and #2 are not applicable. Option #3 requires splitting the data into multiple Guided HOBs, which increases code complexity due to the need to reassemble the data in MM. To simplify this, a fourth method was introduced as below:</p>
 <ol>
 <li>Using MM Memory Allocation HOBs with BSData and Non-Zero GUID:<ul>
 <li>Memory Producer (PEIM): Create a Memory Allocation HOB pointing to a BSData memory region and assign a Non-Zero GUID to the corresponding HOB.</li>
@@ -636,7 +640,7 @@
 </ol>
 <h2 id="17-memory-protection">1.7 Memory Protection</h2>
 <p>The <code>PiSmmCpuStandaloneMm</code> driver creates a page table used in MM mode according to the <code>EFI_HOB_RESOURCE_DESCRIPTOR</code> in the MM HOB list. The newly created page table controls memory accessibility in MM.</p>
-<p>The following table outlines the differences in memory protection policies between the traditional SMM and the Standalone MM. Note: this comparison is particularly relevant for x86 systems and highlights the security enhancements provided by Standalone MM.</p>
+<p>Table 1 outlines the boot phase at which memory protection policies take effect, highlighting the differences between traditional SMM and Standalone MM. Note: this comparison is particularly relevant for x86 systems and highlights the security enhancements provided by Standalone MM.</p>
 <table>
 <thead>
 <tr>
@@ -700,7 +704,7 @@
     
       <h2>
         <div style="position:absolute;text-align:left">Getting Started Guide for Standalone MM on X86 Systems</div>
-        <div style="position:absolute;width:100%;text-align:center">DRAFT [05/17/2025 05:48:27]</div>
+        <div style="position:absolute;width:100%;text-align:center">DRAFT [05/23/2025 01:02:38]</div>
         <div style="text-align:right">Revision 1.00</div>
       </h2>  
     
@@ -729,7 +733,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"1 MM Introduction","level":"1.2","depth":1,"next":{"title":"1.1 SMM and MM Overview","level":"1.2.1","depth":2,"anchor":"#11-smm-and-mm-overview","path":"1_mm_introduction.md","ref":"1_mm_introduction.md#11-smm-and-mm-overview","articles":[]},"previous":{"title":"Getting Started Guide for Standalone MM on X86 Systems","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{"draft":"yes","title":"Getting Started Guide for Standalone MM on X86 Systems","version":"Revision 1.00"},"plugins":["puml-aleung"],"pluginsConfig":{"puml-aleung":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"1_mm_introduction.md","mtime":"2025-05-17T05:48:01.162Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2025-05-17T05:48:27.526Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"1 MM Introduction","level":"1.2","depth":1,"next":{"title":"1.1 SMM and MM Overview","level":"1.2.1","depth":2,"anchor":"#11-smm-and-mm-overview","path":"1_mm_introduction.md","ref":"1_mm_introduction.md#11-smm-and-mm-overview","articles":[]},"previous":{"title":"Getting Started Guide for Standalone MM on X86 Systems","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{"draft":"yes","title":"Getting Started Guide for Standalone MM on X86 Systems","version":"Revision 1.00"},"plugins":["puml-aleung"],"pluginsConfig":{"puml-aleung":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"1_mm_introduction.md","mtime":"2025-05-23T01:02:09.627Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2025-05-23T01:02:38.039Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
