@@ -45,6 +45,15 @@
 ** {{ book.udkrelease }} **
 {% endif %}
 
+#### Contributed by
+
+
+
+Wu Jiaxin
+
+Ni Ray
+
+Xu Wei
 
 ### Acknowledgements
 
